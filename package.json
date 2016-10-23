@@ -1,0 +1,25 @@
+{
+  "name": "moor",
+  "version": "0.0.1",
+  "description": "🔒  VPN minus annoyance",
+  "main": "moor.js",
+  "bin": {
+    "moor": "./moor.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:detj/moor.git"
+  },
+  "keywords": ["vpn", "tunnelblick", "ssl", "tls", "openvpn"],
+  "author": "Debjeet Biswas <debjeet12@gmail.com>",
+  "contributors": [],
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^2.9.0",
+    "otp": "^0.1.2",
+    "update-notifier": "^1.0.2"
+  }
+}
