@@ -33,6 +33,7 @@ Moor expects a `~/.moorrc` JSON file, that should look like
 
 ## Questions
 
+Things are still quite rough around the edges. Feel free to file issues/comments.
 [GitHub Issues](https://github.com/detj/moor/issues/new)
 
 ## License
