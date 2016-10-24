@@ -23,7 +23,7 @@ Moor expects a `~/.moorrc` JSON file, that should look like
 ```json
 [
   {
-    "name": "<tunnelblick-profile-name",
+    "name": "<tunnelblick-profile-name>",
     "secret": "<hussssshhhhhhhhhh>"
   }
 ]
