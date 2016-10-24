@@ -44,16 +44,34 @@ if (program.connect && program.disconnect) {
   exitWithError('Cannot connect & disconnect at the same time')
 }
 
+// VPN profile name to connect
+const connectName = program.connect
+const connectNameType = typeof connectName
 
-const VPNName = program.connect
-if (typeof VPNName === 'boolean') {
+// VPN profile name to disconnect
+const disconnectName = program.disconnect
+const disconnectNameType = typeof disconnectName
+
+// connection
+if (connectNameType === 'boolean') {
   connectAll()
-} else if (typeof VPNName === 'string') {
-  const profile = profiles.find(profile => profile.name === VPNName)
+} else if (connectNameType === 'string') {
+  const profile = profiles.find(profile => profile.name === connectName)
 
-  if (!profile) return exitWithError(`Failed to connect to ${VPNName}`)
+  if (!profile) return exitWithError(`Failed connecting to ${connectName}`)
 
   connect(profile)
+}
+
+// disconnection
+if (disconnectNameType === 'boolean') {
+  disconnectAll()
+} else if (disconnectNameType === 'string') {
+  const profile = profiles.find(profile => profile.name === disconnectName)
+
+  if (!profile) return exitWithError(`Failed disconnecting from ${disconnectName}`)
+
+  disconnect(profile)
 }
 
 function exitWithError(err) {
@@ -79,7 +97,7 @@ function connect(config) {
 
 function disconnect(config) {
   const disconnectCommand = `echo 'tell app "Tunnelblick" to disconnect "${config.name}"' | osascript`
-  exec(disconnectCommand, (err, stadout, stderr) => {
+  exec(disconnectCommand, (err, stdout, stderr) => {
     if (err) return exitWithError(err)
   })
 }
