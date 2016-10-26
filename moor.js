@@ -19,7 +19,10 @@ const homedir = os.homedir()
 const configPath = path.join(homedir, '.moorrc')
 let profiles
 
-// TODO: platform check & early exit if not macOS
+// platform check & early exit if not macOS
+if (os.platform() !== 'darwin') {
+  exitWithError('Only OS X/macOS supported')
+}
 
 // read config file
 try {
