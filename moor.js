@@ -7,6 +7,7 @@ const os = require('os')
 const path = require('path')
 const exec = require('child_process').exec
 const OTP = require('otp')
+const mkdirp = require('mkdirp')
 const program = require('commander')
 const notifier = require('update-notifier')
 const pkg = require('./package.json')
@@ -17,9 +18,13 @@ notifier({ pkg }).notify()
 
 const homedir = os.homedir()
 const configPath = path.join(homedir, '.moorrc')
+const tunnelblickConfigPath = path.join(homedir, 'Library/Application Support/Tunnelblick/Configurations')
 let profiles
 
 // TODO: platform check & early exit if not macOS
+
+// make sure Tunnelblick config path exists
+mkdirp(tunnelblickConfigPath)
 
 // read config file
 try {
@@ -85,13 +90,10 @@ function exitWithError(err) {
 }
 
 function connect(config) {
-  const updatePasswordCommand = `security add-generic-password -U -s Tunnelblick-Auth-${config.name} -a password -w ${generateOTP(config.secret)}`
+  writePass(config.name, generateOTP(config.secret))
   const connectCommand = `echo 'tell app "Tunnelblick" to connect "${config.name}"' | osascript`
-  exec(updatePasswordCommand, (err, stdout, stderr) => {
+  exec(connectCommand, (err, stdout, stderr) => {
     if (err) return exitWithError(err)
-    exec(connectCommand, (err, stdout, stderr) => {
-      if (err) return exitWithError(err)
-    })
   })
 }
 
@@ -113,4 +115,23 @@ function disconnectAll() {
 function generateOTP(secret) {
   const otp = OTP({ secret })
   return otp.totp()
+}
+
+
+/**
+ * writePass - update password in Tunnelblick config
+ */
+function writePass(name, pass) {
+  const prefixPath = `${name}.tblk/Contents/Resources`
+  const ovpnPath = path.join(tunnelblickConfigPath, prefixPath, 'config.ovpn')
+  const authFile = path.join(tunnelblickConfigPath, prefixPath, 'auth.txt')
+  let ovpnData = fs.readFileSync(ovpnPath, { encoding: 'utf8' })
+
+  fs.writeFileSync(authFile, `${name}\n${pass}`)
+
+  if (ovpnData.indexOf('auth-user-pass auth.txt') < 0) {
+    ovpnData = ovpnData.replace('auth-user-pass', 'auth-user-pass auth.txt')
+  }
+
+  fs.writeFileSync(ovpnPath, ovpnData)
 }
