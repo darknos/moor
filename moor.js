@@ -21,7 +21,10 @@ const configPath = path.join(homedir, '.moorrc')
 const tunnelblickConfigPath = path.join(homedir, 'Library/Application Support/Tunnelblick/Configurations')
 let profiles
 
-// TODO: platform check & early exit if not macOS
+// platform check & early exit if not macOS
+if (os.platform() !== 'darwin') {
+  exitWithError('Only OS X/macOS supported')
+}
 
 // make sure Tunnelblick config path exists
 mkdirp(tunnelblickConfigPath)
