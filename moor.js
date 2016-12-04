@@ -17,13 +17,30 @@ const version = pkg.version
 notifier({ pkg }).notify()
 
 const homedir = os.homedir()
-const configPath = path.join(homedir, '.moorrc')
+const oldConfigPath = path.join(homedir, '.moorrc')
+const configDir = path.join(homedir, '.moor')
+const configPath = path.join(configDir, 'moorrc')
 const tunnelblickConfigPath = path.join(homedir, 'Library/Application Support/Tunnelblick/Configurations')
 let profiles
 
 // platform check & early exit if not macOS
 if (os.platform() !== 'darwin') {
   exitWithError('Only OS X/macOS supported')
+}
+
+// run migrations
+migrate()
+
+// migrate
+function migrate() {
+  // migrate to home dir
+  if (fs.existsSync(oldConfigPath)) migrateHomeDir()
+}
+
+// migrate older ~/.moorc to ~/.moor/moorrc
+function migrateHomeDir() {
+  mkdirp.sync(configDir)
+  fs.renameSync(oldConfigPath, configPath)
 }
 
 // make sure Tunnelblick config path exists
