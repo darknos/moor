@@ -1,6 +1,6 @@
 [![Join the chat at https://gitter.im/moor-vpn/Lobby](https://badges.gitter.im/moor-vpn/Lobby.svg)](https://gitter.im/moor-vpn/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-> ## A new update is on the horizon
+> ## :tada: A new update is on the horizon
 > A new version is in the works
 > * it'll stop depending on Tunnelblick & depend on OpenVPN directly
 > * would auto reconnect on disconnection
