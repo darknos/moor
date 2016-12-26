@@ -1,5 +1,11 @@
 [![Join the chat at https://gitter.im/moor-vpn/Lobby](https://badges.gitter.im/moor-vpn/Lobby.svg)](https://gitter.im/moor-vpn/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+> ## A new update is on the horizon
+> A new version is in the works
+> * it'll stop depending on Tunnelblick & depend on OpenVPN directly
+> * would auto reconnect on disconnection
+> * stability
+
 ## Overview
 Moor is a simple CLI app to easily manage connections to an OpenVPN server. If you are having a hard time using [Tunnelblick](https://tunnelblick.net/) along with a 2FA solution like [Google Authenticator](https://en.wikipedia.org/wiki/Google_Authenticator), then *moor* may feel like fresh clean air.
 
