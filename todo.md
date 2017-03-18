@@ -83,10 +83,10 @@ moor.restart()
 
 ### Things to figure out
 
-[ ] `openvpn` needs root privileges. How do we handle that?
-[ ] Listen for `FATAL` responses from openvpn and handle them
-[ ] Instead of using `networksetup` use `scutil`
-[ ] On SIGTERM, kill the openvpn process
-[ ] Use `--writepid` option of openvpn
-[ ] Handle condition if config file does not exist or incorrect
-[ ] If management client disconnects, attempt to connect again
+- [ ] `openvpn` needs root privileges. How do we handle that?
+- [ ] Listen for `FATAL` responses from openvpn and handle them
+- [ ] Instead of using `networksetup` use `scutil`
+- [ ] On SIGTERM, kill the openvpn process
+- [ ] Use `--writepid` option of openvpn
+- [ ] Handle condition if config file does not exist or incorrect
+- [ ] If management client disconnects, attempt to connect again
