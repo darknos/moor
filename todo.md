@@ -34,8 +34,7 @@ Parses & interprets messages from openvpn management protocol.
 var moor = new Moor({
   binPath: '/path/to/openvpn/binary',
   configDir: '/path/to/config/dir',
-  config: '/path/to/config',
-  socketFile: '/path/to/socket'               // defaults to /tmp/<config-name>.sock
+  configFile: '/path/to/ovpn/config',
   setDNS: true,                               // set DNS from log output
   setSearch: true                             // set search from log output
 })
@@ -56,12 +55,38 @@ moor.on('auth', () => {
   // need auth
 })
 
+moor.on('auth:success', () => {
+  // auth success
+})
+
+moor.on('auth:failed', () => {
+  // auth failed
+})
+
 moor.on('bytes', () => {
   // how many bytes transferred in session
 })
 
 // APIs
+// connect to openvpn server
 moor.connect()
+
+// fetch amount of data transferred
 moor.bytes()
+
+// disconnect from openvpn server by sending SIGTERM
 moor.disconnect()
+
+// restarts the openvpn process by sending SIGUSR1
+moor.restart()
 ```
+
+### Things to figure out
+
+[ ] `openvpn` needs root privileges. How do we handle that?
+[ ] Listen for `FATAL` responses from openvpn and handle them
+[ ] Instead of using `networksetup` use `scutil`
+[ ] On SIGTERM, kill the openvpn process
+[ ] Use `--writepid` option of openvpn
+[ ] Handle condition if config file does not exist or incorrect
+[ ] If management client disconnects, attempt to connect again
