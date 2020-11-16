@@ -18,6 +18,7 @@ notifier({ pkg }).notify()
 
 const homedir = os.homedir()
 const configPath = path.join(homedir, '.moorrc')
+const authFilePath = path.join(homedir, '.moorauth')
 const tunnelblickConfigPath = path.join(homedir, 'Library/Application Support/Tunnelblick/Configurations')
 let profiles
 
@@ -127,13 +128,12 @@ function generateOTP(secret) {
 function writePass(name, username, pass) {
   const prefixPath = `${name}.tblk/Contents/Resources`
   const ovpnPath = path.join(tunnelblickConfigPath, prefixPath, 'config.ovpn')
-  const authFile = path.join(tunnelblickConfigPath, prefixPath, 'auth.txt')
   let ovpnData = fs.readFileSync(ovpnPath, { encoding: 'utf8' })
 
-  fs.writeFileSync(authFile, `${username}\n${pass}`)
+  fs.writeFileSync(authFilePath, `${username}\n${pass}`)
 
-  if (ovpnData.indexOf('auth-user-pass auth.txt') < 0) {
-    ovpnData = ovpnData.replace('auth-user-pass', 'auth-user-pass auth.txt')
+  if (ovpnData.indexOf(`auth-user-pass ${authFilePath}`) < 0) {
+    ovpnData = ovpnData.replace('auth-user-pass', `auth-user-pass ${authFilePath}`)
     fs.writeFileSync(ovpnPath, ovpnData)
   }
 
