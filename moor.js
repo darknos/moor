@@ -130,11 +130,11 @@ function writePass(name, username, pass) {
   const authFile = path.join(tunnelblickConfigPath, prefixPath, 'auth.txt')
   let ovpnData = fs.readFileSync(ovpnPath, { encoding: 'utf8' })
 
-  fs.writeFileSync(authFile, `${username}{\n${pass}`)
+  fs.writeFileSync(authFile, `${username}\n${pass}`)
 
   if (ovpnData.indexOf('auth-user-pass auth.txt') < 0) {
     ovpnData = ovpnData.replace('auth-user-pass', 'auth-user-pass auth.txt')
+    fs.writeFileSync(ovpnPath, ovpnData)
   }
 
-  fs.writeFileSync(ovpnPath, ovpnData)
 }
