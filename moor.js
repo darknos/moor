@@ -17,30 +17,13 @@ const version = pkg.version
 notifier({ pkg }).notify()
 
 const homedir = os.homedir()
-const oldConfigPath = path.join(homedir, '.moorrc')
-const configDir = path.join(homedir, '.moor')
-const configPath = path.join(configDir, 'moorrc')
+const configPath = path.join(homedir, '.moorrc')
 const tunnelblickConfigPath = path.join(homedir, 'Library/Application Support/Tunnelblick/Configurations')
 let profiles
 
 // platform check & early exit if not macOS
 if (os.platform() !== 'darwin') {
   exitWithError('Only OS X/macOS supported')
-}
-
-// run migrations
-migrate()
-
-// migrate
-function migrate() {
-  // migrate to home dir
-  if (fs.existsSync(oldConfigPath)) migrateHomeDir()
-}
-
-// migrate older ~/.moorc to ~/.moor/moorrc
-function migrateHomeDir() {
-  mkdirp.sync(configDir)
-  fs.renameSync(oldConfigPath, configPath)
 }
 
 // make sure Tunnelblick config path exists
@@ -110,7 +93,7 @@ function exitWithError(err) {
 }
 
 function connect(config) {
-  writePass(config.name, generateOTP(config.secret))
+  writePass(config.name, config.username, config.pin+generateOTP(config.secret))
   const connectCommand = `echo 'tell app "Tunnelblick" to connect "${config.name}"' | osascript`
   exec(connectCommand, (err, stdout, stderr) => {
     if (err) return exitWithError(err)
@@ -141,13 +124,13 @@ function generateOTP(secret) {
 /**
  * writePass - update password in Tunnelblick config
  */
-function writePass(name, pass) {
+function writePass(name, username, pass) {
   const prefixPath = `${name}.tblk/Contents/Resources`
   const ovpnPath = path.join(tunnelblickConfigPath, prefixPath, 'config.ovpn')
   const authFile = path.join(tunnelblickConfigPath, prefixPath, 'auth.txt')
   let ovpnData = fs.readFileSync(ovpnPath, { encoding: 'utf8' })
 
-  fs.writeFileSync(authFile, `${name}\n${pass}`)
+  fs.writeFileSync(authFile, `${username}{\n${pass}`)
 
   if (ovpnData.indexOf('auth-user-pass auth.txt') < 0) {
     ovpnData = ovpnData.replace('auth-user-pass', 'auth-user-pass auth.txt')
