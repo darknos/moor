@@ -32,6 +32,8 @@ Moor expects a `~/.moorrc` JSON file, that should look like
 [
   {
     "name": "<tunnelblick-profile-name>",
+    "username": "<username>",
+    "pin": "<pin code, to be prepend a google auth code>",
     "secret": "<hussssshhhhhhhhhh>"
   }
 ]
