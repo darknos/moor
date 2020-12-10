@@ -19,7 +19,7 @@ Moor is a simple CLI app to easily manage connections to an OpenVPN server. If y
 ## Installation
 
 ```
-$ npm install -g moor
+$ npm install -g https://github.com/darknos/moor.git
 ```
 
 This should put `moor` in your bin path.
